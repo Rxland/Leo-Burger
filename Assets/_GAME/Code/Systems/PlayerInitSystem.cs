@@ -2,6 +2,7 @@
 using _GAME.Code.StaticData;
 using Leopotam.Ecs;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace _GAME.Code.Systems
 {
@@ -16,10 +17,10 @@ namespace _GAME.Code.Systems
             EcsEntity playerEntity = _ecsWorld.NewEntity();
 
             ref var player = ref playerEntity.Get<PlayerComponent>();
-            ref var inputData = ref playerEntity.Get<PlayerInputDataComponent>();
         
             GameObject playerGO = Object.Instantiate(_mainStaticData.PlayerPrefab, _sceneData.PlayerSpawnPoint.position, Quaternion.identity);
             player.CharacterController = playerGO.GetComponent<CharacterController>();
+            player.PlayerInput = playerGO.GetComponent<PlayerInput>();
         }
     }
 }

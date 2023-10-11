@@ -9,34 +9,45 @@ public class EcsStartup : MonoBehaviour
     [SerializeField] private MainStaticData _mainStaticData;
     public SceneData SceneData;
     private EcsWorld _ecsWorld;
-    private EcsSystems _systems;
+    
+    private EcsSystems _initSystems;
+    private EcsSystems _updateSystems;
 
     private void Start()
     {
         _ecsWorld = new EcsWorld();
-        _systems = new EcsSystems(_ecsWorld);
+        _initSystems = new EcsSystems(_ecsWorld);
+        _updateSystems = new EcsSystems(_ecsWorld);
         RuntimeData runtimeData = new RuntimeData();
 
-        _systems
+        _initSystems
+            .Add(new CameraInitSystem())
+            .Inject(SceneData)
+            .Init();
+
+        _updateSystems
             .Add(new PlayerInitSystem())
+            .Add(new PlayerInputSystem())
+            .Add(new PlayerMovementSystem())
             .Inject(_mainStaticData)
             .Inject(SceneData)
-            .Inject(runtimeData)
-            .Init();
+            .Inject(runtimeData);
         
-        _systems.Add(new )
+        _updateSystems.Init();
     }
 
 
     private void Update()
     {
-        _systems?.Run();
+        _updateSystems?.Run();
     }
 
     private void OnDestroy()
     {
-        _systems?.Destroy();
-        _systems = null;
+        _initSystems?.Destroy();
+        _initSystems = null;
+        _updateSystems?.Destroy();
+        _updateSystems = null;
         _ecsWorld?.Destroy();
         _ecsWorld = null;
     }

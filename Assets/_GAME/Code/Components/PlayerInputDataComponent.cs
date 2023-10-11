@@ -1,9 +1,9 @@
-﻿using System.Numerics;
+﻿using UnityEngine;
 
 namespace _GAME.Code.Components
 {
     public struct PlayerInputDataComponent
     {
-        public Vector3 MoveDirection;
+        public Vector2 MoveDirection;
     }
 }
