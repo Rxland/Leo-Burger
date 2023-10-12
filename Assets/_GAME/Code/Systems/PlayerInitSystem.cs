@@ -21,6 +21,9 @@ namespace _GAME.Code.Systems
             GameObject playerGO = Object.Instantiate(_mainStaticData.PlayerPrefab, _sceneData.PlayerSpawnPoint.position, Quaternion.identity);
             player.CharacterController = playerGO.GetComponent<CharacterController>();
             player.PlayerInput = playerGO.GetComponent<PlayerInput>();
+            player.Transform = playerGO.transform;
+            player.MoveSpeed = _mainStaticData.MoveSpeed;
+            player.RotationSpeed = _mainStaticData.RotationSpeed;
         }
     }
 }
