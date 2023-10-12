@@ -1278,6 +1278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value:
+    Animator: {fileID: 1025003240871497048}
     Transform: {fileID: 1025003240864065026}
     CharacterController: {fileID: 1025003240871497049}
     PlayerInput: {fileID: 2615076584772984276}

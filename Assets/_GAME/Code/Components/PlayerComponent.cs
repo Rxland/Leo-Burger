@@ -8,6 +8,9 @@ namespace _GAME.Code.Components
     [Serializable]
     public struct PlayerComponent
     {
+        public Animator Animator;
+        [Space]
+        
         public Transform Transform;
         public CharacterController CharacterController;
         public PlayerInput PlayerInput;
