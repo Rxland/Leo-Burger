@@ -15,9 +15,9 @@ namespace _GAME.Code.Systems
         
         public void Init()
         {
-            GameObject playerGo = GameObject.Instantiate(_mainStaticData.PlayerPrefab, _sceneData.PlayerSpawnPoint.position, Quaternion.identity);
-            
             EcsEntity camerantity = _ecsWorld.NewEntity();
+            
+            GameObject playerGo = GameObject.Instantiate(_mainStaticData.PlayerPrefab, _sceneData.PlayerSpawnPoint.position, Quaternion.identity);
             
             ref var cameraComponent = ref camerantity.Get<CameraComponent>();
             

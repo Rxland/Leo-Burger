@@ -8,13 +8,14 @@ namespace _GAME.Code.Systems
 {
     public class PlayerInteractorSystem : IEcsRunSystem
     {
-        private EcsFilter<ItemsSpawnerComponent, PlayerComponent, PutItemsComponent> filter;
+        private EcsFilter<ItemsSpawnerComponent, PlayerComponent, PutItemsComponent, PlayerUiComponent> filter;
         
         public void Run()
         {
             ref var itemsSpawnerComponent = ref filter.Get1(0);
             ref var playerComponent = ref filter.Get2(0);
             ref var putItemsComponent = ref filter.Get3(0);
+            ref var playerUiComponent = ref filter.Get4(0);
                 
             Collider[] colliders = Physics.OverlapSphere(playerComponent.Transform.position, playerComponent.InteractionRange);
 
@@ -44,6 +45,8 @@ namespace _GAME.Code.Systems
                                     
                                     playerComponent.TakenItemsList.Add(item);
                                     itemsSpawnerComponent.SpawnedItems.Remove(item);
+                                    
+                                    playerUiComponent.ItemsAmountText.text = playerComponent.TakenItemsList.Count.ToString();
                                         
                                     break;
                                 case InteractionType.PutItems:
@@ -63,6 +66,8 @@ namespace _GAME.Code.Systems
                                     
                                     putItemsComponent.ItemsList.Add(putItem);
                                     playerComponent.TakenItemsList.Remove(putItem);
+                                    
+                                    playerUiComponent.ItemsAmountText.text = playerComponent.TakenItemsList.Count.ToString();
                                     
                                     break;
                             }
