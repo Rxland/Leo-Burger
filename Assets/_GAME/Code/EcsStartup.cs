@@ -17,7 +17,6 @@ public class EcsStartup : MonoBehaviour
     {
         _ecsWorld = new EcsWorld();
         _updateSystems = new EcsSystems(_ecsWorld);
-        RuntimeData runtimeData = new RuntimeData();
         
 
         _updateSystems
@@ -32,7 +31,6 @@ public class EcsStartup : MonoBehaviour
             
             .Inject(_mainStaticData)
             .Inject(SceneData)
-            .Inject(runtimeData)
             .Init();
     }
     

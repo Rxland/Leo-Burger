@@ -9,6 +9,11 @@ namespace _GAME.Code.Systems
     public class PlayerInteractorSystem : IEcsRunSystem
     {
         private EcsFilter<ItemsSpawnerComponent, PlayerComponent, PutItemsComponent, PlayerUiComponent> filter;
+
+        private ItemsSpawnerComponent _itemsSpawnerComponent;
+        private PlayerComponent _playerComponent;
+        private PutItemsComponent _putItemsComponent;
+        private PlayerUiComponent _playerUiComponent;
         
         public void Run()
         {
@@ -16,7 +21,13 @@ namespace _GAME.Code.Systems
             ref var playerComponent = ref filter.Get2(0);
             ref var putItemsComponent = ref filter.Get3(0);
             ref var playerUiComponent = ref filter.Get4(0);
-                
+
+            _itemsSpawnerComponent = itemsSpawnerComponent;
+            _playerComponent = playerComponent;
+            _putItemsComponent = putItemsComponent;
+            _playerUiComponent = playerUiComponent;
+            
+            
             Collider[] colliders = Physics.OverlapSphere(playerComponent.Transform.position, playerComponent.InteractionRange);
 
             foreach (Collider collider in colliders)
@@ -28,46 +39,13 @@ namespace _GAME.Code.Systems
                             switch (interaction.InteractionType)
                             {
                                 case InteractionType.TakeItems:
-                                    if (itemsSpawnerComponent.SpawnedItems.Count == 0) continue;
-                                    
-                                    GameObject item = itemsSpawnerComponent.SpawnedItems.Last();
 
-                                    item.transform.SetParent(playerComponent.Transform);
-                                    
-                                    if (playerComponent.TakenItemsList.Count == 0)
-                                    {
-                                        item.transform.position = playerComponent.TakenItemSpawnPoint.transform.position;
-                                    }
-                                    else
-                                    {
-                                        item.transform.position = playerComponent.TakenItemsList.Last().transform.position + Vector3.up * itemsSpawnerComponent.SpawnYOffset;
-                                    }
-                                    
-                                    playerComponent.TakenItemsList.Add(item);
-                                    itemsSpawnerComponent.SpawnedItems.Remove(item);
-                                    
-                                    playerUiComponent.ItemsAmountText.text = playerComponent.TakenItemsList.Count.ToString();
+                                    TakeItems();
                                         
                                     break;
                                 case InteractionType.PutItems:
-                                    if (playerComponent.TakenItemsList.Count == 0) continue;
-                                    
-                                    GameObject putItem = playerComponent.TakenItemsList.Last();
-                                    putItem.transform.SetParent(null);
-                                    
-                                    if (putItemsComponent.ItemsList.Count == 0)
-                                    {
-                                        putItem.transform.position = putItemsComponent.ItemsPutPoint.transform.position;
-                                    }
-                                    else
-                                    {
-                                        putItem.transform.position = putItemsComponent.ItemsList.Last().transform.position + Vector3.up * itemsSpawnerComponent.SpawnYOffset;
-                                    }
-                                    
-                                    putItemsComponent.ItemsList.Add(putItem);
-                                    playerComponent.TakenItemsList.Remove(putItem);
-                                    
-                                    playerUiComponent.ItemsAmountText.text = playerComponent.TakenItemsList.Count.ToString();
+
+                                    PutItems();
                                     
                                     break;
                             }
@@ -79,6 +57,51 @@ namespace _GAME.Code.Systems
                         }
                 }
             }
+        }
+
+        private void TakeItems()
+        {
+            if (_itemsSpawnerComponent.SpawnedItems.Count == 0) return;
+                                    
+            GameObject item = _itemsSpawnerComponent.SpawnedItems.Last();
+
+            item.transform.SetParent(_playerComponent.Transform);
+                                    
+            if (_playerComponent.TakenItemsList.Count == 0)
+            {
+                item.transform.position = _playerComponent.TakenItemSpawnPoint.transform.position;
+            }
+            else
+            {
+                item.transform.position = _playerComponent.TakenItemsList.Last().transform.position + Vector3.up * _itemsSpawnerComponent.SpawnYOffset;
+            }
+                                    
+            _playerComponent.TakenItemsList.Add(item);
+            _itemsSpawnerComponent.SpawnedItems.Remove(item);
+                                    
+            _playerUiComponent.ItemsAmountText.text = _playerComponent.TakenItemsList.Count.ToString();
+        }
+
+        private void PutItems()
+        {
+            if (_playerComponent.TakenItemsList.Count == 0) return;
+                                    
+            GameObject putItem = _playerComponent.TakenItemsList.Last();
+            putItem.transform.SetParent(null);
+                                    
+            if (_putItemsComponent.ItemsList.Count == 0)
+            {
+                putItem.transform.position = _putItemsComponent.ItemsPutPoint.transform.position;
+            }
+            else
+            {
+                putItem.transform.position = _putItemsComponent.ItemsList.Last().transform.position + Vector3.up * _itemsSpawnerComponent.SpawnYOffset;
+            }
+                                    
+            _putItemsComponent.ItemsList.Add(putItem);
+            _playerComponent.TakenItemsList.Remove(putItem);
+                                    
+            _playerUiComponent.ItemsAmountText.text = _playerComponent.TakenItemsList.Count.ToString();
         }
     }
 }
