@@ -4,6 +4,7 @@ using _GAME.Code.StaticData;
 using _GAME.Code.Systems;
 using Leopotam.Ecs;
 using UnityEngine;
+using Voody.UniLeo;
 
 public class EcsStartup : MonoBehaviour
 {
@@ -21,15 +22,17 @@ public class EcsStartup : MonoBehaviour
         _fixedUpdateSystems = new EcsSystems(_ecsWorld);
         RuntimeData runtimeData = new RuntimeData();
 
-        
+
         _updateSystems
+            .ConvertScene()
             .Add(new PlayerInitSystem())
             .Add(new CameraInitSystem())
             .Add(new PlayerInputSystem())
+            .Add(new ItemsSpawnSystem())
             .Inject(_mainStaticData)
             .Inject(SceneData)
             .Inject(runtimeData);
-
+        
         _fixedUpdateSystems
             .Add(new PlayerMovementSystem())
             .Add(new PlayerRotationSystem());
