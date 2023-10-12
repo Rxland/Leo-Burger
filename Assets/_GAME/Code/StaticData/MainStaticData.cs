@@ -6,8 +6,5 @@ namespace _GAME.Code.StaticData
     public class MainStaticData : ScriptableObject
     {
         public GameObject PlayerPrefab;
-        
-        public float MoveSpeed;
-        public float RotationSpeed;
     }
 }

@@ -16,10 +16,10 @@ namespace _GAME.Code.Systems
             
             ref var playerComponent = ref filter.Get1(0);
             ref var cameraComponent = ref camerantity.Get<CameraComponent>();
-
+            
             cameraComponent.Camera = _sceneData.Camera;
             cameraComponent.VirtualCamera = _sceneData.VirtualCamera;
-
+            
             cameraComponent.VirtualCamera.Follow = playerComponent.Transform;
         }
     }

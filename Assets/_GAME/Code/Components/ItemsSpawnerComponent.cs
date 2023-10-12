@@ -7,10 +7,9 @@ namespace _GAME.Code.Components
     [Serializable]
     public struct ItemsSpawnerComponent
     {
-        public Collider InteractionZone;
-        public bool CanInteract;
+        public Interaction Interaction;
         [Space]
-        
+
         public GameObject ItemToSpawnPrefab;
         public Transform SpawnPoint;
         [Space] 

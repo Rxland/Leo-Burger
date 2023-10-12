@@ -2,7 +2,6 @@
 using _GAME.Code.StaticData;
 using Leopotam.Ecs;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace _GAME.Code.Systems
 {
@@ -12,18 +11,20 @@ namespace _GAME.Code.Systems
         private MainStaticData _mainStaticData;
         private SceneData _sceneData;
 
+        private EcsFilter<PlayerComponent> filter;
+        
         public void Init()
         {
-            EcsEntity playerEntity = _ecsWorld.NewEntity();
-
-            ref var player = ref playerEntity.Get<PlayerComponent>();
-        
-            GameObject playerGO = Object.Instantiate(_mainStaticData.PlayerPrefab, _sceneData.PlayerSpawnPoint.position, Quaternion.identity);
-            player.CharacterController = playerGO.GetComponent<CharacterController>();
-            player.PlayerInput = playerGO.GetComponent<PlayerInput>();
-            player.Transform = playerGO.transform;
-            player.MoveSpeed = _mainStaticData.MoveSpeed;
-            player.RotationSpeed = _mainStaticData.RotationSpeed;
+            GameObject playerGo = GameObject.Instantiate(_mainStaticData.PlayerPrefab, _sceneData.PlayerSpawnPoint.position, Quaternion.identity);
+            
+            EcsEntity camerantity = _ecsWorld.NewEntity();
+            
+            ref var cameraComponent = ref camerantity.Get<CameraComponent>();
+            
+            cameraComponent.Camera = _sceneData.Camera;
+            cameraComponent.VirtualCamera = _sceneData.VirtualCamera;
+            
+            cameraComponent.VirtualCamera.Follow = playerGo.transform;
         }
     }
 }
